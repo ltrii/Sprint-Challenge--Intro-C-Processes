@@ -9,25 +9,25 @@
 int main(int argc, char **argv)
 {
   // Parse command line
-  struct direc *direc;
+  struct dirent *dirent;
   DIR *dir;
 
   struct stat buf;
   // Open directory
-  if (argv[1] != NULL)
-  {
+  if (argv[1] != NULL){
     printf("%d is argc", argc);
     dir = opendir(argv[1]);
   }
-  else
-  {
+  else{
     dir = opendir(".");
   }
   char filepath[] = "./";
   // Repeatly read and print entries
-  while ((direc = readdir(dir)) != NULL)
-  {
-
+  while ((dirent = readdir(dir)) != NULL){
+    char *pathstr = strdup(filepath);
+    strcat(pathstr, dirent->d_name);
+    stat(pathstr, &buf);
+    printf("%11ld %s\n", buf.st_size, dirent->d_name);
   }
   // Close directory
   closedir(dir);
